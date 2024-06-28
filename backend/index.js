@@ -19,9 +19,8 @@ connection.connect(error => {
   console.log('Conectado a la base de datos MySQL');
 });
 
-// Rutas para productos
 app.get('/productos', (req, res) => {
-  connection.query('SELECT * FROM productos', (error, results) => {
+  connection.query('SELECT productos.*, usuarios.nombre as usuario_nombre FROM productos LEFT JOIN usuarios ON productos.usuario_id = usuarios.id', (error, results) => {
     if (error) throw error;
     res.json(results);
   });
@@ -60,9 +59,8 @@ app.delete('/productos/:id', (req, res) => {
   });
 });
 
-// Rutas para usuarios
 app.get('/usuarios', (req, res) => {
-  connection.query('SELECT * FROM usuarios', (error, results) => {
+  connection.query('SELECT usuarios.*, productos.nombre as producto_nombre FROM usuarios LEFT JOIN productos ON usuarios.id = productos.usuario_id', (error, results) => {
     if (error) throw error;
     res.json(results);
   });
